@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <sys/time.h>  // used to seed srand for extra credit
 #include <iostream>
+#include <cmath>
 using namespace std;
 
 Outcome brute(const vector<Point>& data) {
@@ -19,16 +20,41 @@ Outcome brute(const vector<Point>& data) {
 }
 
 
-Outcome divideAndConquer(vector<Point>& data, vector<int> dataX, vector<int> dataY,int start, int end){
-    /*int n = dataX.size();
+Outcome divideAndConquer(const vector<Point>& data, vector<int> dataX, vector<int> dataY,int start, int end){
+    int n = dataX.size();
+
     if (n <= 3){
-        return myBrute(dataX);
+        //return myBrute(dataX);
+
     } else {
-        Point mid = data[dataX[n/2]]; //midpoint //not always the midpoint
-        divideAndConquer(data, dataX, dataY, 0, mid);
-        divideAndConquer(data, dataX, dataY, mid + 1, n-1);
-    }*/
-   return Outcome();
+        int mid = (end - start)/2 + start;
+        Outcome cp1 = divideAndConquer(data, dataX, dataY, 0, mid);
+        Outcome cp2 = divideAndConquer(data, dataX, dataY, mid + 1, n-1);
+        Outcome minCp;
+        
+        if(cp1.dsq > cp2.dsq){
+            minCp.dsq = cp2.dsq;
+            minCp.p = cp2.p;
+            minCp.q = cp2.q;
+        } else {
+            minCp.dsq = cp1.dsq;
+            minCp.p = cp1.p;
+            minCp.q = cp1.q;
+        }
+
+        for(int i = 0; i < dataY.size() - 1; i++){
+            if(data[dataY[i]].x - dataX[mid] <= sqrt(minCp.dsq) &&
+                data[dataY[i + 1]].x - dataX[mid] <= sqrt(minCp.dsq)){ //within range of the median
+                if(distSquared(data[dataY[i]], data[dataY[i + 1]]) < minCp.dsq){
+                    minCp.dsq = distSquared(data[dataY[i]], data[dataY[i + 1]]);
+                    minCp.p = data[dataY[i]];
+                    minCp.q = data[dataY[i + 1]];
+                }
+            }
+        }
+
+        return minCp;
+    }
 }
 
 vector<int> sortX(const vector<Point>& data){
