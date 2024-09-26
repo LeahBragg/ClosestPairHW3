@@ -21,10 +21,21 @@ Outcome brute(const vector<Point>& data) {
 
 
 Outcome divideAndConquer(const vector<Point>& data, vector<int> dataX, vector<int> dataY,int start, int end){
-    int n = dataX.size();
+    int n = end - start;
 
     if (n <= 3){
-        //return myBrute(dataX);
+        if (n <= 0.1*data.size()){ //once it gets down to 10% of og points 
+            Outcome best(data[dataX[start]],data[dataX[end]],distSquared(data[dataX[start]],data[dataX[end]])); //use first two points 
+            for(int j = start; j < end-1; j++){ 
+                for(int k = j+1; k < end; k++){ 
+                    long long temp = distSquared(data[j],data[k]); 
+                    if(temp < best.dsq){ 
+                        best = Outcome(data[j], data[k],temp); 
+                    } 
+                } 
+            } 
+            return best; 
+        }
 
     } else {
         int mid = (end - start)/2 + start;
@@ -32,6 +43,7 @@ Outcome divideAndConquer(const vector<Point>& data, vector<int> dataX, vector<in
         Outcome cp2 = divideAndConquer(data, dataX, dataY, mid + 1, n-1);
         Outcome minCp;
         
+        //find minimum from Left and Right
         if(cp1.dsq > cp2.dsq){
             minCp.dsq = cp2.dsq;
             minCp.p = cp2.p;
