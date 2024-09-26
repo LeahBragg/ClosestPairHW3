@@ -25,7 +25,7 @@ Outcome divideAndConquer(const vector<Point>& data, vector<int> dataX, vector<in
    
     int n = end - start; //base case
     Outcome best;
-    if (n <= 10){ 
+    if (n <= 2000){ 
         //brute force
         Outcome best(data[dataX[start]], data[dataX[start + 1]], distSquared(data[dataX[start]], data[dataX[start + 1]])); //use first two points 
         for(int j = start; j <= end - 1; j++){ 
