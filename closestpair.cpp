@@ -3,7 +3,6 @@
 #include <cstdlib>
 #include <sys/time.h>  // used to seed srand for extra credit
 #include <iostream>
-#include "../../../../usr/include/c++/11/bits/stl_numeric.h"
 using namespace std;
 
 Outcome brute(const vector<Point>& data) {
@@ -34,8 +33,9 @@ Outcome divideAndConquer(vector<Point>& data, vector<Point> dataX,vector<Point> 
 
 vector<int> sortX(const vector<Point>& data){
     vector<int> idx(data.size());
-    iota(idx.begin(), idx.end(), 0);
-    cout << data.size() << endl;
+    for(int i = 0; i < data.size(); i++){ //check to see if it sorted them right !!!!!!!!!!!!!!!!!!!!!!!!!
+        idx[i] = i;
+    }
 
     stable_sort(idx.begin(), idx.end(), [&data](int i1, int i2) {return compareByX(data[i1], data[i2]);});
     return idx;
