@@ -32,11 +32,12 @@ Outcome divideAndConquer(vector<Point>& data, vector<Point> dataX,vector<Point> 
 }
 
 vector<int> sortX(const vector<Point>& data){
-    vector<int> idx(data.size());
-    for(int i = 0; i < data.size(); i++){ //check to see if it sorted them right !!!!!!!!!!!!!!!!!!!!!!!!!
-        idx[i] = i;
+    vector<int> idx;
+    cout << data.size() << endl;
+    for(int i = 0; i < data.size(); i++){ 
+        idx.push_back(i);
     }
-
+    
     stable_sort(idx.begin(), idx.end(), [&data](int i1, int i2) {return compareByX(data[i1], data[i2]);});
     return idx;
 }
@@ -50,10 +51,7 @@ Outcome efficient(const vector<Point>& data) {
     cout << "\n";
     vector<int> dataX = sortX(data);
     vector<Point> dataY = data;
-    //std::sort(dataX.begin(), dataX.end(), compareByX); //sort by X values
-    //std::sort(dataY.begin(), dataY.end(), compareByY); //sort by Y values
-    //^not the sorted indeces, this is sorted data
-    
+        
     for(int i = 0; i < data.size(); i ++){ //check to see if it sorted them right !!!!!!!!!!!!!!!!!!!!!!!!!
         cout << dataX[i];
     }
