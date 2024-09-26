@@ -19,7 +19,7 @@ Outcome brute(const vector<Point>& data) {
 }
 
 
-Outcome divideAndConquer(vector<Point>& data, vector<Point> dataX,vector<Point> dataY,int start, int end){
+Outcome divideAndConquer(vector<Point>& data, vector<int> dataX, vector<int> dataY,int start, int end){
     /*int n = dataX.size();
     if (n <= 3){
         return myBrute(dataX);
@@ -59,15 +59,15 @@ Outcome efficient(const vector<Point>& data) {
 
     cout << "\n";
     vector<int> dataX = sortX(data);
-    vector<Point> dataY = data;
+    vector<int> dataY = sortY(data);
         
     for(int i = 0; i < data.size(); i ++){ 
         cout << dataX[i];
     }
     cout << "\n";
 
-    // Divide and conquer
-    //Outcome best = divideAndConquer(data, dataX, dataY, 0, data.size() - 1);
+    //Divide and conquer
+    Outcome best = divideAndConquer(data, dataX, dataY, 0, data.size() - 1);
 
     return Outcome();
 }
