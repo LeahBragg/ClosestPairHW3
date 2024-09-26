@@ -32,27 +32,36 @@ Outcome divideAndConquer(vector<Point>& data, vector<Point> dataX,vector<Point> 
 }
 
 vector<int> sortX(const vector<Point>& data){
-    vector<int> idx;
-    cout << data.size() << endl;
-    for(int i = 0; i < data.size(); i++){ 
-        idx.push_back(i);
+    vector<int> dataX;
+    for(int i = data.size() - 1; i >= 0; i--){ 
+        dataX.push_back(i);
     }
     
-    stable_sort(idx.begin(), idx.end(), [&data](int i1, int i2) {return compareByX(data[i1], data[i2]);});
-    return idx;
+    stable_sort(dataX.begin(), dataX.end(), [&data](int i1, int i2) {return compareByX(data[i1], data[i2]);});
+    return dataX;
+}
+
+vector<int> sortY(const vector<Point>& data){
+    vector<int> dataY;
+    for(int i = data.size() - 1; i >= 0; i--){ 
+        dataY.push_back(i);
+    }
+    
+    stable_sort(dataY.begin(), dataY.end(), [&data](int i1, int i2) {return compareByY(data[i1], data[i2]);});
+    return dataY;
 }
 
 Outcome efficient(const vector<Point>& data) {
     // Sort the data
-
-    for(int i = 0; i < data.size(); i ++){ //check to see if it sorted them right !!!!!!!!!!!!!!!!!!!!!!!!!
-        cout << data[i].x;
+    for(int i = 0; i < data.size(); i++){ 
+        cout << data[i].x << endl;
     }
+
     cout << "\n";
     vector<int> dataX = sortX(data);
     vector<Point> dataY = data;
         
-    for(int i = 0; i < data.size(); i ++){ //check to see if it sorted them right !!!!!!!!!!!!!!!!!!!!!!!!!
+    for(int i = 0; i < data.size(); i ++){ 
         cout << dataX[i];
     }
     cout << "\n";
