@@ -4,6 +4,7 @@
 #include <sys/time.h>  // used to seed srand for extra credit
 #include <iostream>
 #include <cmath>
+#include <chrono>
 using namespace std;
 
 //given brute force approach
@@ -21,28 +22,30 @@ Outcome brute(const vector<Point>& data) {
 }
 
 //recursive divide and conquer 
-Outcome divideAndConquer(const vector<Point>& data, vector<int> dataX, vector<int> dataY,int start, int end){
+Outcome divideAndConquer(const vector<Point>& data, vector<int> dataX, vector<int> dataY, int start, int end){
    
     int n = end - start; //base case
     Outcome best;
     if (n <= 2000){ 
         //brute force
         Outcome best(data[dataX[start]], data[dataX[start + 1]], distSquared(data[dataX[start]], data[dataX[start + 1]])); //use first two points 
-        for(int j = start; j <= end - 1; j++){ 
+        for(int j = start + 1; j <= end - 1; j++){ 
             for(int k = j + 1; k <= end; k++){ 
                 long long temp = distSquared(data[dataX[j]], data[dataX[k]]); 
                 if(temp < best.dsq){ 
-                    best = Outcome(data[dataX[j]], data[dataX[k]], temp); 
+                    best.dsq = temp;
+                    best.p = data[dataX[j]];
+                    best.q = data[dataX[k]]; 
                 } 
             } 
         } 
         return best; 
-    }
-
+    } 
     int mid = (end - start)/2 + start; //find median between end and start
+    
     Outcome cpLeft = divideAndConquer(data, dataX, dataY, start, mid);
     Outcome cpRight = divideAndConquer(data, dataX, dataY, mid + 1, end);
-
+        
     //find minimum from Left and Right and set it to "best"
     if(cpLeft.dsq > cpRight.dsq){
         best.dsq = cpRight.dsq;
@@ -56,21 +59,19 @@ Outcome divideAndConquer(const vector<Point>& data, vector<int> dataX, vector<in
 
     //loop vertically through points close to median
     for(unsigned int i = 0; i < dataY.size() - 1; i++){
-
         if(abs(data[dataY[i]].x - dataX[mid]) <= sqrt(best.dsq)){ //if point is in rang of the median
-           
             for(unsigned int j = i + 1; j < dataY.size(); j++){ //loop upwards
-                if((abs(data[dataY[j]].x - dataX[mid]) <= sqrt(best.dsq))){ //if this point is also in range
-                    
-                    if(distSquared(data[dataY[i]], data[dataY[j]]) < best.dsq){//new minimum found
-                        best.dsq = distSquared(data[dataY[i]], data[dataY[j]]);
+                if((abs(data[dataY[j]].x - dataX[mid]) <= sqrt(best.dsq))){ //if this point is also in range        
+                    long long int newDisSq = distSquared(data[dataY[i]], data[dataY[j]]);
+                    if(newDisSq < best.dsq){//new minimum found
+                        best.dsq = newDisSq;
                         best.p = data[dataY[i]];
                         best.q = data[dataY[j]];
 
                     } else { //stop looping, out of bounds
                         break;
                     }
-                }
+                } 
             }
         }
     }
@@ -84,7 +85,7 @@ vector<int> sortX(const vector<Point>& data){
     for(unsigned int i = 0; i < data.size(); i++){ 
         dataX.push_back(i);
     }
-    
+
     stable_sort(dataX.begin(), dataX.end(), [&data](int i1, int i2) {return compareByX(data[i1], data[i2]);});
     return dataX;
 }
