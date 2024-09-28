@@ -41,10 +41,19 @@ Outcome divideAndConquer(const vector<Point>& data, vector<int> dataX, vector<in
         } 
         return best; 
     } 
-    int mid = (end - start)/2 + start; //find median between end and start
     
-    Outcome cpLeft = divideAndConquer(data, dataX, dataY, start, mid);
-    Outcome cpRight = divideAndConquer(data, dataX, dataY, mid + 1, end);
+    //spliting the Y vector
+    int midAll = (end - start)/2 + start; //find median between end and start
+    int midY = dataY.size()/2;
+
+    vector<int> dataYLeft(midAll - start + 1);
+    vector<int> dataYRight(end - midAll + 1);
+
+    copy(dataY.begin(), dataY.begin() + midY, dataYLeft.begin());
+    copy(dataY.begin() + midY, dataY.end(), dataYRight.begin());
+
+    Outcome cpLeft = divideAndConquer(data, dataX, dataYLeft, start, midAll);
+    Outcome cpRight = divideAndConquer(data, dataX, dataYRight, midAll + 1, end);
         
     //find minimum from Left and Right and set it to "best"
     if(cpLeft.dsq > cpRight.dsq){
@@ -59,9 +68,9 @@ Outcome divideAndConquer(const vector<Point>& data, vector<int> dataX, vector<in
 
     //loop vertically through points close to median
     for(unsigned int i = 0; i < dataY.size() - 1; i++){
-        if(abs(data[dataY[i]].x - dataX[mid]) <= sqrt(best.dsq)){ //if point is in rang of the median
+        if(abs(data[dataY[i]].x - dataX[midAll]) <= sqrt(best.dsq)){ //if point is in rang of the median
             for(unsigned int j = i + 1; j < dataY.size(); j++){ //loop upwards
-                if((abs(data[dataY[j]].x - dataX[mid]) <= sqrt(best.dsq))){ //if this point is also in range        
+                if((abs(data[dataY[j]].x - dataX[midAll]) <= sqrt(best.dsq))){ //if this point is also in range        
                     long long int newDisSq = distSquared(data[dataY[i]], data[dataY[j]]);
                     if(newDisSq < best.dsq){//new minimum found
                         best.dsq = newDisSq;
