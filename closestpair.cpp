@@ -26,7 +26,7 @@ Outcome divideAndConquer(const vector<Point>& data, vector<int> dataX, vector<in
    
     int n = end - start; //base case
     Outcome best;
-    if (n <= 2000){ 
+    if (n <= 1000){ 
         //brute force
         Outcome best(data[dataX[start]], data[dataX[start + 1]], distSquared(data[dataX[start]], data[dataX[start + 1]])); //use first two points 
         for(int j = start + 1; j <= end - 1; j++){ 
@@ -41,7 +41,7 @@ Outcome divideAndConquer(const vector<Point>& data, vector<int> dataX, vector<in
         } 
         return best; 
     } 
-    
+
     //spliting the Y vector
     int midAll = (end - start)/2 + start; //find median between end and start
     int midY = dataY.size()/2;
